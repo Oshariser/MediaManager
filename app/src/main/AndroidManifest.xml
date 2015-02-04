@@ -22,7 +22,11 @@
         <service android:name=".Service.MediaManagerService"></service>
 
         <receiver class=".Broadcast.MediaManagerReceiver"
-            android:name=".Broadcast.MediaManagerReceiver"></receiver>
+            android:name=".Broadcast.MediaManagerReceiver">
+            <intent-filter>
+                <action android:name="download"/>
+            </intent-filter>
+        </receiver>
 
     </application>
 
