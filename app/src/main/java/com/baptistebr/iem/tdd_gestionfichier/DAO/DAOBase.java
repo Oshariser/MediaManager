@@ -1,7 +1,9 @@
-package com.baptistebr.iem.tdd_gestionfichier;
+package com.baptistebr.iem.tdd_gestionfichier.DAO;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
+
+import com.baptistebr.iem.tdd_gestionfichier.DAO.DatabaseHandler;
 
 /**
  * Created by iem on 03/12/14.

@@ -1,8 +1,9 @@
-package com.baptistebr.iem.tdd_gestionfichier;
+package com.baptistebr.iem.tdd_gestionfichier.DAO;
 
 import android.content.ContentValues;
 import android.content.Context;
-import android.os.Build;
+
+import com.baptistebr.iem.tdd_gestionfichier.DAO.Objects.MediaObject;
 
 /**
  * Created by iem on 03/12/14.

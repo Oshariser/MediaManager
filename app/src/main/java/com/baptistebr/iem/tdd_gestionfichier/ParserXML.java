@@ -1,6 +1,7 @@
 package com.baptistebr.iem.tdd_gestionfichier;
 
-import org.xml.sax.helpers.DefaultHandler;
+import com.baptistebr.iem.tdd_gestionfichier.DAO.Objects.MediaObject;
+
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 import org.xmlpull.v1.XmlPullParserFactory;

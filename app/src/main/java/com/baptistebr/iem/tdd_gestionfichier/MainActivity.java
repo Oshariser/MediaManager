@@ -3,7 +3,9 @@ package com.baptistebr.iem.tdd_gestionfichier;
 import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
+import android.content.Intent;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.widget.DrawerLayout;
 import android.view.Menu;
@@ -15,6 +17,7 @@ import android.widget.ListView;
 import com.baptistebr.iem.tdd_gestionfichier.Adapters.NavigationAdapter;
 import com.baptistebr.iem.tdd_gestionfichier.Fragments.MediaFragment;
 import com.baptistebr.iem.tdd_gestionfichier.Items.NavigationLigne;
+import com.baptistebr.iem.tdd_gestionfichier.Utilities.Global;
 
 import java.util.ArrayList;
 
@@ -32,8 +35,7 @@ public class MainActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        MediaManager mediaManager = new MediaManager();
-        mediaManager.execute(this);
+        sendBroadcast(new Intent(Global.NEED_TO_START_SERVICE));
         initialiserActivite();
     }
 

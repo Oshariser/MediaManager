@@ -3,7 +3,9 @@ package com.baptistebr.iem.tdd_gestionfichier;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
-import android.widget.Toast;
+
+import com.baptistebr.iem.tdd_gestionfichier.DAO.Objects.MediaObject;
+import com.baptistebr.iem.tdd_gestionfichier.DAO.MediaObjectDAO;
 
 import org.xmlpull.v1.XmlPullParserException;
 
