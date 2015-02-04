@@ -1,6 +1,7 @@
 package com.baptistebr.iem.tdd_gestionfichier;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.util.Log;
 
@@ -29,10 +30,10 @@ public class MediaManager extends AsyncTask<Object, Void, ArrayList<MediaObject>
         //mContext = ;
         ArrayList<MediaObject> donnees = null;
         String resultat = ConnectionHTTP.recupererDonneesXML();
-        Log.v("TDD_GestionFichier", "MediaManager/resultat : " + resultat);
+        Log.v(Method.FILTRE, "MediaManager/resultat : " + resultat);
         try {
             donnees = ParserXML.recupererDonnesParsees(resultat);
-            Log.v("TDD_GestionFichier", "MediaManager/donnees.size() : " + donnees.size());
+            Log.v(Method.FILTRE, "MediaManager/donnees.size() : " + donnees.size());
         }
         catch (XmlPullParserException e) {
             e.printStackTrace();
@@ -52,5 +53,8 @@ public class MediaManager extends AsyncTask<Object, Void, ArrayList<MediaObject>
             mediaObjectDAO.ajouterMediaObject(mediaObject);
         }
         mediaObjectDAO.close();
+        Intent intent = new Intent();
+        intent.setAction(Method.DOWNLOAD);
+        mContext.sendBroadcast(intent);
     }
 }

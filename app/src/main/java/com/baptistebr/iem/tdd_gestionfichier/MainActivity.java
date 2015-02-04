@@ -17,7 +17,7 @@ import android.widget.ListView;
 import com.baptistebr.iem.tdd_gestionfichier.Adapters.NavigationAdapter;
 import com.baptistebr.iem.tdd_gestionfichier.Fragments.MediaFragment;
 import com.baptistebr.iem.tdd_gestionfichier.Items.NavigationLigne;
-import com.baptistebr.iem.tdd_gestionfichier.Utilities.Global;
+import com.baptistebr.iem.tdd_gestionfichier.Service.MediaManagerService;
 
 import java.util.ArrayList;
 
@@ -35,7 +35,7 @@ public class MainActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        sendBroadcast(new Intent(Global.NEED_TO_START_SERVICE));
+        startService(new Intent(this, MediaManagerService.class));
         initialiserActivite();
     }
 

@@ -2,8 +2,11 @@ package com.baptistebr.iem.tdd_gestionfichier.DAO;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 
 import com.baptistebr.iem.tdd_gestionfichier.DAO.Objects.MediaObject;
+
+import java.util.ArrayList;
 
 /**
  * Created by iem on 03/12/14.
@@ -33,5 +36,20 @@ public class MediaObjectDAO extends DAOBase {
         contentValues.put(PATH, media.path);
         contentValues.put(TYPE, media.type);
         mDb.insert(TABLE_NOM, null, contentValues);
+    }
+
+    public ArrayList<MediaObject> recupererListeMediaObject(String type){
+        ArrayList<MediaObject> mediaObjectArrayList = new ArrayList<MediaObject>();
+        Cursor cursor = mDb.rawQuery("SELECT * FROM " + TABLE_NOM + " WHERE " + TYPE + " = ?", new String[]{type});
+        for(cursor.moveToFirst(); cursor.isAfterLast(); cursor.moveToNext()){
+            MediaObject mediaObject = new MediaObject();
+            mediaObject.name = cursor.getString(1);
+            mediaObject.versionCode = cursor.getString(2);
+            mediaObject.path = cursor.getString(3);
+            mediaObject.type = cursor.getString(4);
+            mediaObjectArrayList.add(mediaObject);
+        }
+        cursor.close();
+        return mediaObjectArrayList;
     }
 }

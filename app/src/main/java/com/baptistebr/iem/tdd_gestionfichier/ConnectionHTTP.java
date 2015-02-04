@@ -26,7 +26,7 @@ public class ConnectionHTTP {
         String resultat = null;
         HttpClient httpClient = new DefaultHttpClient();
         HttpGet httpGet = new HttpGet(url);
-        Log.v("TDD_GestionFichier", "ConnectionHTTP/url : " + url);
+        Log.v(Method.FILTRE, "ConnectionHTTP/url : " + url);
         try {
             HttpResponse response = httpClient.execute(httpGet);
             HttpEntity entity = response.getEntity();
