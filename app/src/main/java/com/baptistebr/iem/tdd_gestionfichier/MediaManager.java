@@ -54,12 +54,10 @@ public class MediaManager extends AsyncTask<Object, Void, ArrayList<MediaObject>
             if(m != null){
                 if(!m.versionCode.equals(mediaObject.versionCode)){
                     mediaObject.id = m.id;
-                    mediaObject.download = 0;
                     mediaObjectDAO.modifierMediaObject(mediaObject);
                 }
             }
             else{
-                mediaObject.download = 0;
                 mediaObjectDAO.ajouterMediaObject(mediaObject);
             }
         }

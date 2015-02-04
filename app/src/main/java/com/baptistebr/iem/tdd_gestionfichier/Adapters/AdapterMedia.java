@@ -54,7 +54,7 @@ public class AdapterMedia extends ArrayAdapter<MediaObject>{
                 @Override
                 public void onClick(View v) {
                     DownloadMedia lDownloadMedia = new DownloadMedia(mPDMedia);
-                    lDownloadMedia.execute(mMedias.get(aPosition).path);
+                    lDownloadMedia.execute(new String[]{mMedias.get(aPosition).path, mMedias.get(aPosition).name});
                 }
             });
 
@@ -83,7 +83,7 @@ public class AdapterMedia extends ArrayAdapter<MediaObject>{
             ((ViewHolder) lView.getTag()).buttonDelete.setTag(mMedias.get(aPosition));
         }
         ViewHolder holder = (ViewHolder) lView.getTag();
-        holder.textView.setText(mMedias.get(aPosition).name);
+        holder.textView.setText(mMedias.get(aPosition).path);
 
         return lView;
     }

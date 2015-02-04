@@ -30,4 +30,6 @@ public class MediaObject {
         this.type = type;
         this.download = download;
     }
+
+
 }

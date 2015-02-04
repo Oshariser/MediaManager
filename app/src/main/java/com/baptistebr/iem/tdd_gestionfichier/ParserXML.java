@@ -38,7 +38,7 @@ public class ParserXML {
                         media = new MediaObject(xpParser.getAttributeValue(null, "name"),
                                 xpParser.getAttributeValue(null, "versionCode"),
                                 xpParser.getAttributeValue(null, "path"),
-                                xpParser.getAttributeValue(null, "type"));
+                                xpParser.getAttributeValue(null, "type"), 0);
                         listeMedias.add(media);
                     }
                     break;
