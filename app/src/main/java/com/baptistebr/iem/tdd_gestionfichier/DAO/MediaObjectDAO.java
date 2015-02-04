@@ -64,10 +64,15 @@ public class MediaObjectDAO extends DAOBase {
     public MediaObject recupererMediaObject(MediaObject mediaObject){
         MediaObject media = null;
         Cursor cursor = mDb.rawQuery("SELECT * FROM " + TABLE_NOM + " WHERE " + NAME + " = ? & " + PATH + " = ? & " + TYPE + " = ?", new String[]{mediaObject.name, mediaObject.path, mediaObject.type});
-        if(cursor.getCount() != 0){
+        if(cursor.getCount() > 0){
             cursor.moveToFirst();
             media = new MediaObject(cursor.getLong(0), cursor.getString(1), cursor.getString(2), cursor.getString(3), cursor.getString(4), cursor.getInt(5));
         }
+        cursor.close();
         return media;
+    }
+
+    public void supprimerMediaObject(MediaObject mediaObject){
+        mDb.delete(TABLE_NOM, ID + " = ?", new String[]{String.valueOf(mediaObject.id)});
     }
 }
