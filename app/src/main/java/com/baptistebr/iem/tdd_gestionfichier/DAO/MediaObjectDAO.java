@@ -41,7 +41,7 @@ public class MediaObjectDAO extends DAOBase {
     public ArrayList<MediaObject> recupererListeMediaObject(String type){
         ArrayList<MediaObject> mediaObjectArrayList = new ArrayList<MediaObject>();
         Cursor cursor = mDb.rawQuery("SELECT * FROM " + TABLE_NOM + " WHERE " + TYPE + " = ?", new String[]{type});
-        for(cursor.moveToFirst(); cursor.isAfterLast(); cursor.moveToNext()){
+        for(cursor.moveToFirst(); !cursor.isAfterLast(); cursor.moveToNext()){
             MediaObject mediaObject = new MediaObject();
             mediaObject.name = cursor.getString(1);
             mediaObject.versionCode = cursor.getString(2);

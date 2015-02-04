@@ -2,7 +2,9 @@ package com.baptistebr.iem.tdd_gestionfichier.Fragments;
 
 
 
+import android.app.Activity;
 import android.app.Fragment;
+import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,8 +15,12 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.baptistebr.iem.tdd_gestionfichier.Adapters.AdapterMedia;
+import com.baptistebr.iem.tdd_gestionfichier.DAO.MediaObjectDAO;
 import com.baptistebr.iem.tdd_gestionfichier.DAO.Objects.MediaObject;
 import com.baptistebr.iem.tdd_gestionfichier.R;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class MediaFragment extends Fragment {
 
@@ -24,6 +30,8 @@ public class MediaFragment extends Fragment {
 
     public String texte;
     public int icone;
+    private Activity mActivity;
+    private String mType;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -35,14 +43,22 @@ public class MediaFragment extends Fragment {
             jtv_test.setText(texte);
             jiv_test.setImageResource(icone);
         }
+
+        List<MediaObject> lMedias;
+
+        MediaObjectDAO bdd = new MediaObjectDAO(mActivity.getApplicationContext());
+        bdd.open();
+        lMedias = bdd.recupererListeMediaObject(mType);
+        ArrayAdapter<MediaObject> adapter = new AdapterMedia(mActivity, lMedias);
+        bdd.close();
+        mListViewMedia.setAdapter(adapter);
         return rootView;
     }
 
-    public void setFragmentParameters(String text, int icon) {
+    public void setFragmentParameters(String text, int icon, Activity aContext, String type) {
         this.texte = text;
         this.icone = icon;
-
-        //ArrayAdapter<MediaObject> adapter = new AdapterMedia(this, );
-        //mListViewMedia.setAdapter(adapter);
+        this.mActivity = aContext;
+        this.mType = type;
     }
 }

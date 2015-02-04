@@ -4,6 +4,8 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import com.baptistebr.iem.tdd_gestionfichier.Method;
+
 /**
  * Created by iem on 03/12/14.
  */

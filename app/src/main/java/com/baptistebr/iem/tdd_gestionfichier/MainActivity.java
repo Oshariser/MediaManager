@@ -30,6 +30,7 @@ public class MainActivity extends Activity {
     private ArrayList<NavigationLigne> alNavigationLigne;
     private CharSequence drawerTitre;
     private CharSequence titre;
+    private Activity mMainActivity = this;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -94,17 +95,17 @@ public class MainActivity extends Activity {
                     case 0:
                         fragment = new MediaFragment();
                         ((MediaFragment)fragment).setFragmentParameters(alNavigationLigne.get(0).nom,
-                                alNavigationLigne.get(0).icone);
+                                alNavigationLigne.get(0).icone, mMainActivity, "image");
                         break;
                     case 1:
                         fragment = new MediaFragment();
                         ((MediaFragment)fragment).setFragmentParameters(alNavigationLigne.get(1).nom,
-                                alNavigationLigne.get(1).icone);
+                                alNavigationLigne.get(1).icone, mMainActivity, "texte");
                         break;
                     case 2:
                         fragment = new MediaFragment();
                         ((MediaFragment)fragment).setFragmentParameters(alNavigationLigne.get(2).nom,
-                                alNavigationLigne.get(2).icone);
+                                alNavigationLigne.get(2).icone, mMainActivity, "audio");
                         break;
                     default:
                         break;

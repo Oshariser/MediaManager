@@ -27,7 +27,7 @@ public class MediaManager extends AsyncTask<Object, Void, ArrayList<MediaObject>
 
     @Override
     protected ArrayList<MediaObject> doInBackground(Object... params) {
-        //mContext = ;
+        mContext = (Context) params[0];
         ArrayList<MediaObject> donnees = null;
         String resultat = ConnectionHTTP.recupererDonneesXML();
         Log.v(Method.FILTRE, "MediaManager/resultat : " + resultat);
