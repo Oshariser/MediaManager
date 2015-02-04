@@ -19,14 +19,12 @@ import java.io.InputStreamReader;
  */
 public class ConnectionHTTP {
 
-    private static String url = "http://lionel.banand.free.fr/lp_iem/updaterLPIEM.php?serial=AAA&type=medias";
-
-    public static String recupererDonneesXML() {
+    public static String recupererDonneesXML(String url) {
 
         String resultat = null;
         HttpClient httpClient = new DefaultHttpClient();
         HttpGet httpGet = new HttpGet(url);
-        Log.v(Method.FILTRE, "ConnectionHTTP/url : " + url);
+        //Log.v(Method.FILTRE, "ConnectionHTTP/url : " + url);
         try {
             HttpResponse response = httpClient.execute(httpGet);
             HttpEntity entity = response.getEntity();

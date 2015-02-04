@@ -29,11 +29,11 @@ public class MediaManager extends AsyncTask<Object, Void, ArrayList<MediaObject>
     protected ArrayList<MediaObject> doInBackground(Object... params) {
         mContext = (Context) params[0];
         ArrayList<MediaObject> donnees = null;
-        String resultat = ConnectionHTTP.recupererDonneesXML();
-        Log.v(Method.FILTRE, "MediaManager/resultat : " + resultat);
+        String resultat = ConnectionHTTP.recupererDonneesXML(Method.URL_LISTE);
+        //Log.v(Method.FILTRE, "MediaManager/resultat : " + resultat);
         try {
             donnees = ParserXML.recupererDonnesParsees(resultat);
-            Log.v(Method.FILTRE, "MediaManager/donnees.size() : " + donnees.size());
+            //Log.v(Method.FILTRE, "MediaManager/donnees.size() : " + donnees.size());
         }
         catch (XmlPullParserException e) {
             e.printStackTrace();
@@ -50,7 +50,18 @@ public class MediaManager extends AsyncTask<Object, Void, ArrayList<MediaObject>
         MediaObjectDAO mediaObjectDAO = new MediaObjectDAO(mContext);
         mediaObjectDAO.open();
         for(MediaObject mediaObject : alMediaObject){
-            mediaObjectDAO.ajouterMediaObject(mediaObject);
+            MediaObject m = mediaObjectDAO.recupererMediaObject(mediaObject);
+            if(m != null){
+                if(!m.versionCode.equals(mediaObject.versionCode)){
+                    mediaObject.id = m.id;
+                    mediaObject.download = 0;
+                    mediaObjectDAO.modifierMediaObject(mediaObject);
+                }
+            }
+            else{
+                mediaObject.download = 0;
+                mediaObjectDAO.ajouterMediaObject(mediaObject);
+            }
         }
         mediaObjectDAO.close();
         Intent intent = new Intent();
