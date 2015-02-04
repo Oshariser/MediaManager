@@ -15,10 +15,9 @@ public class MediaManagerReceiver extends BroadcastReceiver{
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        Log.v(Method.FILTRE, "Receiver");
         String action = intent.getAction();
         if(action.equals(Method.DOWNLOAD)){
-
+            Log.v(Method.FILTRE, "Téléchargement effectué avec succès !");
         }
     }
 }
