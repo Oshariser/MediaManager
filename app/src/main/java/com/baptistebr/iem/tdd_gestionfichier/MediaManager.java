@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.baptistebr.iem.tdd_gestionfichier.DAO.Objects.MediaObject;
 import com.baptistebr.iem.tdd_gestionfichier.DAO.MediaObjectDAO;
@@ -29,17 +30,20 @@ public class MediaManager extends AsyncTask<Object, Void, ArrayList<MediaObject>
     protected ArrayList<MediaObject> doInBackground(Object... params) {
         mContext = (Context) params[0];
         ArrayList<MediaObject> donnees = null;
-        String resultat = ConnectionHTTP.recupererDonneesXML(Method.URL_LISTE);
-        //Log.v(Method.FILTRE, "MediaManager/resultat : " + resultat);
-        try {
-            donnees = ParserXML.recupererDonnesParsees(resultat);
-            //Log.v(Method.FILTRE, "MediaManager/donnees.size() : " + donnees.size());
+        if(Method.testerEtatConnexion(mContext)) {
+            String resultat = ConnectionHTTP.recupererDonneesXML(Method.URL_LISTE);
+            //Log.v(Method.FILTRE, "MediaManager/resultat : " + resultat);
+            try {
+                donnees = ParserXML.recupererDonnesParsees(resultat);
+                //Log.v(Method.FILTRE, "MediaManager/donnees.size() : " + donnees.size());
+            } catch (XmlPullParserException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
-        catch (XmlPullParserException e) {
-            e.printStackTrace();
-        }
-        catch (IOException e) {
-            e.printStackTrace();
+        else{
+            Toast.makeText(mContext, "Aucune connexion internet detectée ... Impossible de synchroniser les données !", Toast.LENGTH_LONG).show();
         }
         return donnees;
     }
