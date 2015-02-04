@@ -13,8 +13,11 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.baptistebr.iem.tdd_gestionfichier.Adapters.NavigationAdapter;
+import com.baptistebr.iem.tdd_gestionfichier.DAO.MediaObjectDAO;
+import com.baptistebr.iem.tdd_gestionfichier.DAO.Objects.MediaObject;
 import com.baptistebr.iem.tdd_gestionfichier.Fragments.MediaFragment;
 import com.baptistebr.iem.tdd_gestionfichier.Items.NavigationLigne;
 import com.baptistebr.iem.tdd_gestionfichier.Service.MediaManagerService;
