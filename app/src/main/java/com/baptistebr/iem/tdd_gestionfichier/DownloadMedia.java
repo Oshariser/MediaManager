@@ -1,11 +1,15 @@
 package com.baptistebr.iem.tdd_gestionfichier;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Environment;
 import android.util.Log;
+
+import com.baptistebr.iem.tdd_gestionfichier.DAO.MediaObjectDAO;
+import com.baptistebr.iem.tdd_gestionfichier.DAO.Objects.MediaObject;
 
 import org.apache.http.util.ByteArrayBuffer;
 
@@ -22,11 +26,13 @@ import java.net.URLConnection;
 /**
  * Created by root on 2/4/15.
  */
-public class DownloadMedia extends AsyncTask<String,Object,Bitmap> {
+public class DownloadMedia extends AsyncTask<MediaObject,Object,Bitmap> {
     ProgressDialog mPD;
-
-    public DownloadMedia(ProgressDialog aPD) {
+    MediaObject mMediaObject;
+    Context mContext;
+    public DownloadMedia(ProgressDialog aPD, Context aContext) {
         mPD = aPD;
+        mContext = aContext;
     }
 
     @Override
@@ -37,25 +43,12 @@ public class DownloadMedia extends AsyncTask<String,Object,Bitmap> {
     }
 
     @Override
-    protected Bitmap doInBackground(String... params) {
-        /**try {
-            URL url = new URL(Method.URL_MEDIA + params[0]);
-            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-            connection.setDoInput(true);
-            connection.connect();
-            InputStream input = connection.getInputStream();
-            Bitmap myBitmap = BitmapFactory.decodeStream(input);
-            return myBitmap;
-        } catch (IOException e) {
-            Log.e("DownloadMedia", e.getMessage());
-            mPD.dismiss();
-            return null;
-        }*/
-
+    protected Bitmap doInBackground(MediaObject... params) {
+        mMediaObject = params[0];
         try {
-            URL url = new URL(Method.URL_MEDIA + params[0]);
+            URL url = new URL(Method.URL_MEDIA + mMediaObject.path);
             File extStore = Environment.getExternalStorageDirectory();
-            File file = new File(extStore, params[1]);
+            File file = new File(extStore, mMediaObject.name);
 
             long startTime = System.currentTimeMillis();
             Log.d("ImageManager", "download begining");
@@ -95,6 +88,11 @@ public class DownloadMedia extends AsyncTask<String,Object,Bitmap> {
 
     @Override
     protected void onPostExecute(Bitmap aBitmap) {
+        MediaObjectDAO bdd = new MediaObjectDAO(mContext);
+        bdd.open();
+        mMediaObject.download = 1;
+        bdd.modifierMediaObject(mMediaObject);
+        bdd.close();
         mPD.dismiss();
         super.onPostExecute(aBitmap);
     }
