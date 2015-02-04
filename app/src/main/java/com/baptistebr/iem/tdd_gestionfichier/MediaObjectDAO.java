@@ -1,6 +1,7 @@
 package com.baptistebr.iem.tdd_gestionfichier;
 
 import android.content.ContentValues;
+import android.content.Context;
 import android.os.Build;
 
 /**
@@ -20,21 +21,16 @@ public class MediaObjectDAO extends DAOBase {
         + PATH + " TEXT, " + TYPE + " TEXT);";
     public static String SCRIPT_SUPPRESSION_TABLE = "DROP TABLE IF EXISTS " + TABLE_NOM + ";";
 
-    public void ajouterMediaObject(MediaObject media){
-        ContentValues contentValues = new ContentValues();
-        contentValues.put("name", media.name);
-        contentValues.put("versionCode", media.versionCode);
-        contentValues.put("path", media.path);
-        contentValues.put("type", media.type);
-
+    public MediaObjectDAO(Context pContext) {
+        super(pContext);
     }
 
-    public void modifierMediaObject(MediaObject media){
+    public void ajouterMediaObject(MediaObject media){
         ContentValues contentValues = new ContentValues();
-        contentValues.put("name", media.name);
-        contentValues.put("versionCode", media.versionCode);
-        contentValues.put("path", media.path);
-        contentValues.put("type", media.type);
-
+        contentValues.put(NAME, media.name);
+        contentValues.put(VERSIONCODE, media.versionCode);
+        contentValues.put(PATH, media.path);
+        contentValues.put(TYPE, media.type);
+        mDb.insert(TABLE_NOM, null, contentValues);
     }
 }

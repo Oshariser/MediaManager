@@ -32,7 +32,8 @@ public class MainActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        MediaManager.synchroniserDonnees();
+        MediaManager mediaManager = new MediaManager();
+        mediaManager.execute(this);
         initialiserActivite();
     }
 

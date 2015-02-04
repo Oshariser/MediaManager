@@ -15,11 +15,12 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-
+        db.execSQL(MediaObjectDAO.SCRIPT_CREATION_TABLE);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+        db.execSQL(MediaObjectDAO.SCRIPT_SUPPRESSION_TABLE);
         onCreate(db);
     }
 }
