@@ -42,32 +42,33 @@ public class MediaManager extends AsyncTask<Object, Void, ArrayList<MediaObject>
                 e.printStackTrace();
             }
         }
-        else{
-            Toast.makeText(mContext, "Aucune connexion internet detectée ... Impossible de synchroniser les données !", Toast.LENGTH_LONG).show();
-        }
         return donnees;
     }
 
     @Override
     protected void onPostExecute(ArrayList<MediaObject> alMediaObject) {
         super.onPostExecute(alMediaObject);
-        MediaObjectDAO mediaObjectDAO = new MediaObjectDAO(mContext);
-        mediaObjectDAO.open();
-        for(MediaObject mediaObject : alMediaObject){
-            MediaObject m = mediaObjectDAO.recupererMediaObject(mediaObject);
-            if(m != null){
-                if(!m.versionCode.equals(mediaObject.versionCode)){
-                    mediaObject.id = m.id;
-                    mediaObjectDAO.modifierMediaObject(mediaObject);
+        if(alMediaObject != null) {
+            MediaObjectDAO mediaObjectDAO = new MediaObjectDAO(mContext);
+            mediaObjectDAO.open();
+            for (MediaObject mediaObject : alMediaObject) {
+                MediaObject m = mediaObjectDAO.recupererMediaObject(mediaObject);
+                if (m != null) {
+                    if (!m.versionCode.equals(mediaObject.versionCode)) {
+                        mediaObject.id = m.id;
+                        mediaObjectDAO.modifierMediaObject(mediaObject);
+                    }
+                } else {
+                    mediaObjectDAO.ajouterMediaObject(mediaObject);
                 }
             }
-            else{
-                mediaObjectDAO.ajouterMediaObject(mediaObject);
-            }
+            mediaObjectDAO.close();
+            Intent intent = new Intent();
+            intent.setAction(Method.DOWNLOAD);
+            mContext.sendBroadcast(intent);
         }
-        mediaObjectDAO.close();
-        Intent intent = new Intent();
-        intent.setAction(Method.DOWNLOAD);
-        mContext.sendBroadcast(intent);
+        else{
+            Toast.makeText(mContext, "Aucune connexion internet detectée ... Impossible de synchroniser les données !", Toast.LENGTH_LONG).show();
+        }
     }
 }

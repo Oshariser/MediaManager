@@ -7,6 +7,7 @@ import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Environment;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.baptistebr.iem.tdd_gestionfichier.DAO.MediaObjectDAO;
 import com.baptistebr.iem.tdd_gestionfichier.DAO.Objects.MediaObject;
@@ -26,7 +27,7 @@ import java.net.URLConnection;
 /**
  * Created by root on 2/4/15.
  */
-public class DownloadMedia extends AsyncTask<MediaObject,Object,Bitmap> {
+public class DownloadMedia extends AsyncTask<MediaObject,Object,Boolean> {
     ProgressDialog mPD;
     MediaObject mMediaObject;
     Context mContext;
@@ -43,57 +44,67 @@ public class DownloadMedia extends AsyncTask<MediaObject,Object,Bitmap> {
     }
 
     @Override
-    protected Bitmap doInBackground(MediaObject... params) {
+    protected Boolean doInBackground(MediaObject... params) {
         mMediaObject = params[0];
-        try {
-            URL url = new URL(Method.URL_MEDIA + mMediaObject.path);
-            File extStore = Environment.getExternalStorageDirectory();
-            File file = new File(Method.URI, mMediaObject.name);
+        if(Method.testerEtatConnexion(mContext)) {
+            try {
+                URL url = new URL(Method.URL_MEDIA + mMediaObject.path);
+                File extStore = Environment.getExternalStorageDirectory();
+                File file = new File(extStore, mMediaObject.name);
 
-            long startTime = System.currentTimeMillis();
-            Log.d("ImageManager", "download begining");
-            Log.d("ImageManager", "download url:" + url);
-            Log.d("ImageManager", "downloaded file name:");
-                        /* Open a connection to that URL. */
-            URLConnection ucon = url.openConnection();
+                long startTime = System.currentTimeMillis();
+                Log.d("ImageManager", "download begining");
+                Log.d("ImageManager", "download url:" + url);
+                Log.d("ImageManager", "downloaded file name:");
+                            /* Open a connection to that URL. */
+                URLConnection ucon = url.openConnection();
 
-                        /*
-                         * Define InputStreams to read from the URLConnection.
-                         */
-            InputStream is = ucon.getInputStream();
-            BufferedInputStream bis = new BufferedInputStream(is);
+                            /*
+                             * Define InputStreams to read from the URLConnection.
+                             */
+                InputStream is = ucon.getInputStream();
+                BufferedInputStream bis = new BufferedInputStream(is);
 
-                        /*
-                         * Read bytes to the Buffer until there is nothing more to read(-1).
-                         */
-            ByteArrayBuffer baf = new ByteArrayBuffer(1024);
-            int current = 0;
-            while ((current = bis.read()) != -1) {
-                baf.append((byte) current);
+                            /*
+                             * Read bytes to the Buffer until there is nothing more to read(-1).
+                             */
+                ByteArrayBuffer baf = new ByteArrayBuffer(1024);
+                int current = 0;
+                while ((current = bis.read()) != -1) {
+                    baf.append((byte) current);
+                }
+
+                            /* Convert the Bytes read to a String. */
+                FileOutputStream fos = new FileOutputStream(file);
+                fos.write(baf.toByteArray());
+                fos.close();
+                Log.d("ImageManager", "download ready in"
+                        + ((System.currentTimeMillis() - startTime) / 1000)
+                        + " sec");
+
+            } catch (IOException e) {
+                Log.e("ImageManager", "Error: " + e);
             }
-
-                        /* Convert the Bytes read to a String. */
-            FileOutputStream fos = new FileOutputStream(file);
-            fos.write(baf.toByteArray());
-            fos.close();
-            Log.d("ImageManager", "download ready in"
-                    + ((System.currentTimeMillis() - startTime) / 1000)
-                    + " sec");
-
-        } catch (IOException e) {
-            Log.e("ImageManager", "Error: " + e);
+            return true;
         }
-        return null;
+        else {
+            return false;
+        }
     }
 
     @Override
-    protected void onPostExecute(Bitmap aBitmap) {
-        MediaObjectDAO bdd = new MediaObjectDAO(mContext);
-        bdd.open();
-        mMediaObject.download = 1;
-        bdd.modifierMediaObject(mMediaObject);
-        bdd.close();
-        mPD.dismiss();
-        super.onPostExecute(aBitmap);
+    protected void onPostExecute(Boolean bool) {
+        if(bool) {
+            MediaObjectDAO bdd = new MediaObjectDAO(mContext);
+            bdd.open();
+            mMediaObject.download = 1;
+            bdd.modifierMediaObject(mMediaObject);
+            bdd.close();
+            mPD.dismiss();
+            super.onPostExecute(bool);
+        }
+        else{
+            Toast.makeText(mContext, "Aucune connexion internet detectée ... Impossible de synchroniser les données !", Toast.LENGTH_LONG).show();
+        }
     }
 }
