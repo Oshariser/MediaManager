@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">TDD_GestionFichier</string>
+
+    <string name="menu_settings">Settings</string>
+
+    <string name="test">TEST</string>
+
+    <string name="navigation_image">Images</string>
+    <string name="navigation_texte">Textes</string>
+    <string name="navigation_son">Sons</string>
+
+    <string name="drawer_ouvrir">Choisir un média</string>
+    <string name="drawer_fermer">Fermer la fenêtre de navigation</string>
+
+</resources>
