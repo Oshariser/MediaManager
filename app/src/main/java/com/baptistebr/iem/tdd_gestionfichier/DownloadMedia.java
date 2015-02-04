@@ -48,7 +48,7 @@ public class DownloadMedia extends AsyncTask<MediaObject,Object,Bitmap> {
         try {
             URL url = new URL(Method.URL_MEDIA + mMediaObject.path);
             File extStore = Environment.getExternalStorageDirectory();
-            File file = new File(extStore, mMediaObject.name);
+            File file = new File(Method.URI, mMediaObject.name);
 
             long startTime = System.currentTimeMillis();
             Log.d("ImageManager", "download begining");

@@ -2,17 +2,26 @@ package com.baptistebr.iem.tdd_gestionfichier.Adapters;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.os.Environment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.baptistebr.iem.tdd_gestionfichier.DAO.MediaObjectDAO;
 import com.baptistebr.iem.tdd_gestionfichier.DAO.Objects.MediaObject;
 import com.baptistebr.iem.tdd_gestionfichier.DownloadMedia;
+import com.baptistebr.iem.tdd_gestionfichier.FileOpen;
+import com.baptistebr.iem.tdd_gestionfichier.Fragments.MediaFragment;
+import com.baptistebr.iem.tdd_gestionfichier.Method;
 import com.baptistebr.iem.tdd_gestionfichier.R;
 
 
+import java.io.File;
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -50,11 +59,29 @@ public class AdapterMedia extends ArrayAdapter<MediaObject>{
             lViewHolder.buttonUpdate = (Button) lView.findViewById(R.id.buttonUpdate);
             lViewHolder.buttonDelete = (Button) lView.findViewById(R.id.buttonDelete);
 
+            if(mMedias.get(aPosition).download == 1) {
+                lViewHolder.buttonDownload.setText("Open");
+            } else {
+                lViewHolder.buttonDelete.setVisibility(View.GONE);
+            }
+            lViewHolder.buttonUpdate.setVisibility(View.GONE);
+
             lViewHolder.buttonDownload.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    DownloadMedia lDownloadMedia = new DownloadMedia(mPDMedia, mContext);
-                    lDownloadMedia.execute(mMedias.get(aPosition));
+                    if(mMedias.get(aPosition).download == 1){
+                        File extStore = Environment.getExternalStorageDirectory();
+                        File file = new File(extStore, mMedias.get(aPosition).name);
+                        try {
+                            FileOpen.openFile(mContext, file);
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    } else {
+                        DownloadMedia lDownloadMedia = new DownloadMedia(mPDMedia, mContext);
+                        lDownloadMedia.execute(mMedias.get(aPosition));
+                    }
+
                 }
             });
 
@@ -68,7 +95,15 @@ public class AdapterMedia extends ArrayAdapter<MediaObject>{
             lViewHolder.buttonDelete.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-
+                    File extStore = Environment.getExternalStorageDirectory();
+                    File file = new File(extStore, mMedias.get(aPosition).name);
+                    file.delete();
+                    mMedias.get(aPosition).download = 0;
+                    MediaObjectDAO bdd = new MediaObjectDAO(mContext);
+                    bdd.open();
+                    bdd.modifierMediaObject(mMedias.get(aPosition));
+                    Toast.makeText(mContext,"Media supprimer avec succées",Toast.LENGTH_LONG).show();
+                    MediaFragment.fillListViewMedias();
                 }
             });
 
@@ -84,9 +119,6 @@ public class AdapterMedia extends ArrayAdapter<MediaObject>{
         }
         ViewHolder holder = (ViewHolder) lView.getTag();
         holder.textView.setText(mMedias.get(aPosition).path);
-        if(mMedias.get(aPosition).download == 1) {
-            holder.buttonDownload.setEnabled(false);
-        }
 
         return lView;
     }

@@ -26,12 +26,12 @@ public class MediaFragment extends Fragment {
 
     public TextView jtv_test;
     public ImageView jiv_test;
-    ListView mListViewMedia;
+    private static ListView mListViewMedia;
 
     public String texte;
     public int icone;
-    private Activity mActivity;
-    private String mType;
+    private static Activity mActivity;
+    private static String mType;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -44,14 +44,7 @@ public class MediaFragment extends Fragment {
             jiv_test.setImageResource(icone);
         }
 
-        List<MediaObject> lMedias;
-
-        MediaObjectDAO bdd = new MediaObjectDAO(mActivity.getApplicationContext());
-        bdd.open();
-        lMedias = bdd.recupererListeMediaObject(mType);
-        ArrayAdapter<MediaObject> adapter = new AdapterMedia(mActivity, lMedias);
-        bdd.close();
-        mListViewMedia.setAdapter(adapter);
+        fillListViewMedias();
         return rootView;
     }
 
@@ -60,5 +53,15 @@ public class MediaFragment extends Fragment {
         this.icone = icon;
         this.mActivity = aContext;
         this.mType = type;
+    }
+
+    public static void fillListViewMedias(){
+        List<MediaObject> lMedias;
+        MediaObjectDAO bdd = new MediaObjectDAO(mActivity.getApplicationContext());
+        bdd.open();
+        lMedias = bdd.recupererListeMediaObject(mType);
+        ArrayAdapter<MediaObject> adapter = new AdapterMedia(mActivity, lMedias);
+        bdd.close();
+        mListViewMedia.setAdapter(adapter);
     }
 }
