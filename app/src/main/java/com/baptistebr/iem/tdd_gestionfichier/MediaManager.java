@@ -20,8 +20,13 @@ public class MediaManager extends AsyncTask<Object, Void, ArrayList<MediaObject>
     private Context mContext;
 
     @Override
+    protected void onPreExecute() {
+        super.onPreExecute();
+    }
+
+    @Override
     protected ArrayList<MediaObject> doInBackground(Object... params) {
-        mContext = (Context) params[0];
+        //mContext = ;
         ArrayList<MediaObject> donnees = null;
         String resultat = ConnectionHTTP.recupererDonneesXML();
         Log.v("TDD_GestionFichier", "MediaManager/resultat : " + resultat);
